@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>voter</title>
+  <style type="text/css">
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #777;
+      padding: 30px;
+      box-sizing: border-box;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    h2 {
+      color: skyblue;
+      font-weight: 400;
+      font-size: 30px;
+    }
+
+    h3 {
+      font-size: 44px;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .login-box {
+      text-align: right;
+    }
+
+    #js-new-topic {
+      line-height: 36px;
+      font-size: 18px;
+      border-radius: 2px;
+      border: 1px solid #dcc;
+      padding: 8px;
+      width: 100%;
+      font-weight: 300;
+      color: skyblue;
+    }
+
+    #vote {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 20px;
+      margin-bottom: 40px;
+    }
+
+    #js-new-topic {
+      margin-top: 20px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <a id="login" class="hide" href="/auth/google">Login with Google</a>
+    <a id="logout" class="hide" href="/logout">Logout</a>
+  </div>
+
+
+
+  <div id="vote" class="hide">
+    <h2 id="topic"></h2>
+    <h3 id="score"></h3>
+    <p><span id="votes"></span> total votes.</p>
+
+    <button id="js-vote-up">+1</button>
+    <button id="js-vote-none">0</button>
+    <button id="js-vote-down">-1</button>
+  </div>
+
+  <form id="new-vote">
+    <button id="js-show-new" type="button">Start a new Vote</button>
+    <input id="js-new-topic" class="hide" placeholder="Enter a topic and hit enter">
+  </form>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+
+    const socket = io();
+
+    const config = {};
+
+    $('#js-new-topic').focus();
+
+    $('#new-vote').addEventListener('submit', (evt) => {
+      evt.preventDefault();
+      const topic = $('#js-new-topic').value;
+      socket.emit('createPoll', topic, (err, vote) => {
+        $('#js-new-topic').classList.add('hide');
+        render(vote);
+        config.id = vote.id;
+        document.location.hash = config.id;
+      });
+    });
+
+    $('#js-vote-up').addEventListener('click', function() {
+      socket.emit('vote', {
+        pollId: config.id,
+        value: 1
+      }, (err, success) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+    });
+
+    $('#js-vote-down').addEventListener('click', () => {
+      socket.emit('vote', {
+        pollId: config.id,
+        value: -1
+      }, (err, success) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+    });
+
+    $('#js-vote-none').addEventListener('click', () => {
+      socket.emit('vote', {
+        pollId: config.id,
+        value: 0
+      }, (err, success) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+    });
+
+    $('#js-show-new').addEventListener('click', () => {
+      $('#js-new-topic').classList.remove('hide');
+    });
+
+    function boot() {
+      console.log('boot!');
+      if (document.location.hash) {
+        join(document.location.hash.substr(1));
+      }
+
+      socket.emit('whoami', (err, data) => {
+        if (data) {
+          $('#logout').classList.remove('hide');
+          $('#login').classList.add('hide');
+        } else {
+          $('#login').classList.remove('hide');
+          $('#logout').classList.add('hide');
+        }
+      });
+    }
+
+    socket.on('connect', boot);
+    window.addEventListener('hashchange', boot)
+
+    socket.on('pollUpdate', render);
+
+    function render(vote) {
+      const { title, score, votes } = vote;
+      $('#topic').textContent = title;
+      $('#score').textContent = score;
+      $('#votes').textContent = votes;
+      $('#vote').classList.remove('hide');
+    }
+
+    function join(id) {
+      socket.emit('joinPoll', id, (err, vote) => {
+        if (err) {
+          console.log(`bad id ${id}`);
+          return false;
+        }
+
+        render(vote);
+        config.id = vote.id;
+        document.location.hash = id;
+      })
+    }
+
+    function $(selector) {
+      return document.querySelector(selector);
+    }
+
+  </script>
+</body>
+</html>

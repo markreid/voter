@@ -1,0 +1,9 @@
+module.exports = {
+  GOOGLE_CLIENT_ID: 'google-client-id',
+  GOOGLE_CLIENT_SECRET: 'google-client-secret',
+  GOOGLE_AUTH_CALLBACK_URL: 'http://yourhost:8080/auth/google/callback',
+  SESSION_SECRET: 'session-secrety-secrets',
+  PORT: 8080 || procss.env.VOTER_PORT,
+  REDIS_DB: 1 || process.env.VOTER_REDIS_DB,
+  LOG_LEVEL: 'info' || process.env.VOTER_LOG_LEVEL,
+};

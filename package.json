@@ -1,0 +1,47 @@
+{
+  "name": "voter",
+  "version": "1.0.0",
+  "description": "conduct anonymous votes in realtime",
+  "main": "index.js",
+  "engines": {
+    "node": ">6.0.0"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "connect-redis": "^3.1.0",
+    "cookie": "^0.3.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "passport": "^0.3.2",
+    "passport-google-oauth20": "^1.0.0",
+    "redis": "^2.6.2",
+    "sequelize": "^3.23.3",
+    "socket.io": "^1.4.6",
+    "sqlite3": "^3.1.4",
+    "uuid": "^2.0.2",
+    "winston": "^2.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^2.13.1",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.9.2",
+    "eslint-plugin-jsx-a11y": "^1.5.3",
+    "eslint-plugin-react": "^5.2.2",
+    "nodemon": "^1.9.2"
+  },
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markreid/voter.git"
+  },
+  "author": "Mark Reid",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/markreid/voter/issues"
+  },
+  "homepage": "https://github.com/markreid/voter#readme"
+}
