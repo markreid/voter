@@ -137,7 +137,14 @@
     });
 
     function boot() {
-      console.log('boot!');
+      if(config.id) {
+        socket.emit('leavePoll', config.id, (err, success) => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      }
+
       if (document.location.hash) {
         join(document.location.hash.substr(1));
       }
@@ -158,8 +165,9 @@
 
     socket.on('pollUpdate', render);
 
-    function render(vote) {
-      const { title, score, votes } = vote;
+    function render(poll) {
+      if (poll.id !== config.id ) return false;
+      const { title, score, votes } = poll;
       $('#topic').textContent = title;
       $('#score').textContent = score;
       $('#votes').textContent = votes;
@@ -173,8 +181,8 @@
           return false;
         }
 
-        render(vote);
         config.id = vote.id;
+        render(vote);
         document.location.hash = id;
       })
     }
