@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 const log = require('../lib/logger');
 
 const db = new Sequelize({
-  storage: '../voter.sqlite',
+  storage: 'voter.sqlite',
   dialect: 'sqlite',
   logging: log.debug,
 });
