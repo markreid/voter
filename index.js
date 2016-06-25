@@ -11,6 +11,7 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const cookie = require('cookie');
+const path = require('path');
 const RedisStore = require('connect-redis')(session);
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const log = require('./lib/logger');
@@ -93,6 +94,9 @@ app.get('/logout', (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/views/vote.html`);
 });
+
+// static files
+app.use('/static', express.static(path.join(__dirname, 'client/build')));
 
 
 // middleware ensures we can get a session from the socket request
