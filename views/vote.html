@@ -3,22 +3,35 @@
 <head>
   <title>voter</title>
   <style type="text/css">
-    body {
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: 14px;
-      color: #777;
-      padding: 30px;
+
+  /*
+    #94CCBB
+    #3F957B
+    #57CCA9
+    #5D7F75
+    #384C46
+   */
+
+    * {
       box-sizing: border-box;
     }
 
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #94CCBB;
+      padding: 30px;
+      margin: 0;
+    }
+
     a {
-      color: inherit;
+      color: #3F957B;
     }
 
     h2 {
-      color: skyblue;
+      color: #3F957B;
       font-weight: 400;
-      font-size: 30px;
+      font-size: 48px;
     }
 
     h3 {
@@ -44,7 +57,7 @@
       color: skyblue;
     }
 
-    #vote {
+    #poll {
       border-bottom: 1px solid #eee;
       padding-bottom: 20px;
       margin-bottom: 40px;
@@ -54,47 +67,70 @@
       margin-top: 20px;
     }
 
-    .authed .hide-authed {
-      display: none;
+    .spinner {
+      width: 40px;
+      height: 40px;
+
+      position: relative;
+      margin: 30px auto;
     }
 
-    .unauthed .hide-unauthed {
-      display: none;
+    .double-bounce1, .double-bounce2 {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #94CCBB;
+      opacity: 0.6;
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+      animation: sk-bounce 2.0s infinite ease-in-out;
     }
 
+    .double-bounce2 {
+      -webkit-animation-delay: -1.0s;
+      animation-delay: -1.0s;
+    }
+
+    @-webkit-keyframes sk-bounce {
+      0%, 100% { -webkit-transform: scale(0.0) }
+      50% { -webkit-transform: scale(1.0) }
+    }
+
+    @keyframes sk-bounce {
+      0%, 100% {
+        transform: scale(0.0);
+        -webkit-transform: scale(0.0);
+      } 50% {
+        transform: scale(1.0);
+        -webkit-transform: scale(1.0);
+      }
+    }
+
+    #splash {
+      margin-top: 20vh;
+      text-align: center;
+    }
+
+    #splash h1 {
+      margin: 0;
+      font-size: 36px;
+    }
   </style>
 </head>
-<body class="unauthed">
-  <div class="login-box">
-    <span class="hide-authed">You must be logged in to create polls and submit votes.</span>
-    <a id="login" class="hide-authed" href="/auth/google">Login with Google</a>
-    <a id="logout" class="hide-unauthed" href="/logout">Logout</a>
-  </div>
-
-
-
-  <div id="vote" class="hide">
-    <h2 id="topic"></h2>
-    <h3 id="score"></h3>
-    <p><span id="votes"></span> total votes.</p>
-
-    <div class="hide-unauthed">
-      <button id="js-vote-up">+1</button>
-      <button id="js-vote-none">0</button>
-      <button id="js-vote-down">-1</button>
+<body >
+  <div id="container">
+    <div id="splash">
+      <h1>voter.</h1>
+      <div class="spinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+      </div>
     </div>
   </div>
 
-  <form id="new-vote" class="hide-unauthed">
-    <button id="js-show-new" type="button">Start a new Vote</button>
-    <input id="js-new-topic" class="hide" placeholder="Enter a topic and hit enter">
-  </form>
-
-  <script src="/socket.io/socket.io.js"></script>
   <script src="/static/app.js"></script>
-
-
-
-  </script>
 </body>
 </html>

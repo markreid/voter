@@ -20,6 +20,7 @@ module.exports = [{
       loader: 'babel-loader',
       query: {
         presets: ['es2015', 'react'],
+        plugins: ['babel-plugin-transform-decorators-legacy'],
       },
     },
     // {
