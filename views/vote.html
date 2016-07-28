@@ -20,7 +20,7 @@
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-size: 14px;
       color: #94CCBB;
-      padding: 30px;
+      padding: 0;
       margin: 0;
     }
 
@@ -46,16 +46,15 @@
       text-align: right;
     }
 
-    #js-new-topic {
-      line-height: 36px;
-      font-size: 18px;
-      border-radius: 2px;
-      border: 1px solid #dcc;
-      padding: 8px;
-      width: 100%;
-      font-weight: 300;
-      color: skyblue;
+    .header {
+      padding: 12px 24px;
     }
+
+    #container  {
+      width: 100vw;
+      overflow: hidden;
+    }
+
 
     #poll {
       border-bottom: 1px solid #eee;
@@ -118,6 +117,95 @@
       margin: 0;
       font-size: 36px;
     }
+
+    .new-vote--title {
+      line-height: 36px;
+      font-size: 18px;
+      border-radius: 2px;
+      border: 1px solid #dcc;
+      padding: 8px;
+      width: 100%;
+      font-weight: 300;
+      color: skyblue;
+    }
+
+    .new-vote--hidden {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1em;
+      margin: 1em -10px;
+    }
+
+    .new-vote--hidden > div {
+      text-align: center;
+      border: 1px solid #5D7F75;
+      padding: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      flex: 1;
+      margin: 0 10px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .new-vote--hidden > div.selected {
+      background: #94CCBB;
+      color: white;
+    }
+
+    .new-vote--submit {
+      background: #384C46;
+      color: white;
+      flex: 2;
+      text-align: center;
+      border: 1px solid #5D7F75;
+      padding: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .sidebar-wrapper {
+      display: flex;
+      width: 150%;
+      transform: translateX(-33.333334%);
+      transition: transform 0.4s ease-in-out;
+    }
+
+    .sidebar-wrapper.show {
+      transform: translateX(0);
+    }
+
+    .sidebar-wrapper .sidebar {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .sidebar-wrapper .content {
+      flex: 2;
+      padding: 30px;
+    }
+
+    .polls-list-item {
+      margin: 0 0 0.7em;
+    }
+
+    .polls-list-item.active a {
+      color: #333;
+    }
+
+    .polls-list-item a {
+      text-decoration: none;
+      border-bottom: 1px solid #B4ECDB;
+      font-size: 18px;
+      font-weight: 200;
+      color: #57CCA9;
+    }
+
+    .polls-list-item a:hover {
+      color: #333;
+    }
+
   </style>
 </head>
 <body >

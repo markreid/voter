@@ -128,17 +128,18 @@ function noop() {}
 io.on('connection', (socket) => {
   log.info('socket connected');
 
+  const owner = socket.request.userid;
 
   // create a new poll
-  socket.on('createPoll', (title, callback = noop) => {
+  socket.on('createPoll', ({ title, hidden }, callback = noop) => {
     // must be authenticated
-    const owner = socket.request.userid;
     if (!owner) {
       return callback(403);
     }
 
     return polls.createPoll({
       title,
+      hidden,
       owner,
     }).then(poll => {
       socket.join(poll.id);
@@ -154,7 +155,7 @@ io.on('connection', (socket) => {
   socket.on('joinPoll', (id, callback) => {
     log.debug(`joinPoll ${id}`);
 
-    return polls.getPollSummary(id)
+    return polls.getPollSummary(id, owner)
     .then(poll => {
       if (!poll) {
         log.debug(`poll ${id} doesn't exist`);
@@ -202,6 +203,32 @@ io.on('connection', (socket) => {
     .catch(err => {
       log.error(err);
       return callback(err);
+    });
+  });
+
+  socket.on('reset', (id, callback = noop) => {
+    log.info(`reset ${id}`);
+
+    return polls.resetPoll(id, owner)
+    .then(response => {
+      callback(null, response);
+      io.to(id).emit('pollUpdate', response); // tell everybody else
+    })
+    .catch(err => {
+      callback(err);
+    });
+  });
+
+  socket.on('destroy', (id, callback = noop) => {
+    log.info(`destroy ${id}`);
+
+    return polls.destroyPoll(id, owner)
+    .then(response => {
+      callback(null, response);
+      io.to(id).emit('pollDestroyed', id); // tell everybody else
+    })
+    .catch(err => {
+      callback(err);
     });
   });
 

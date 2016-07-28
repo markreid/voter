@@ -1,0 +1,4 @@
+- handle disconnections gracefully
+- emit changes after reset
+- reactivity for public list
+- don't lose location when you login
